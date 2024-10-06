@@ -1,0 +1,19 @@
+{
+    "name": "secgin/api-library-base",
+    "description": "PHP için API entegrasyonları için kütüphanerin oluşturlması kolaylaştırmak için tasarlanmıştır.",
+    "autoload": {
+        "psr-4": {
+            "YG\\ApiLibraryBase\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Seçgin",
+            "email": "secginsanli@gmail.com"
+        }
+    ],
+    "require": {
+      "ext-curl": "*",
+      "ext-json": "*"
+    }
+}
