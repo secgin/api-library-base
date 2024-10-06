@@ -54,7 +54,7 @@ final class HttpRequest implements Abstracts\HttpRequest
     public function setData(array $data): self
     {
         foreach ($data as $key => $value)
-            $this->url = str_replace("{" . $key . "}", $value, $this->url);
+            $this->url = @str_replace("{" . $key . "}", $value, $this->url);
 
         $this->data = $data;
         return $this;
@@ -66,7 +66,7 @@ final class HttpRequest implements Abstracts\HttpRequest
         {
             if (strpos($this->url, "{" . $key . "}") !== false)
             {
-                $this->url = str_replace("{" . $key . "}", $value, $this->url);
+                $this->url = @str_replace("{" . $key . "}", $value, $this->url);
                 unset($params[$key]);
             }
         }
