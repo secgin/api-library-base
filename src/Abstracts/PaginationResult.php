@@ -10,6 +10,7 @@ namespace YG\ApiLibraryBase\Abstracts;
  * @property int   $previous
  * @property int   $last
  * @property int   $current
+ * @property int   $limit
  */
 interface PaginationResult extends Result
 {

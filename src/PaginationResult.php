@@ -9,7 +9,7 @@ final class PaginationResult extends AbstractResult
     public function __get($name)
     {
         if ($name == 'totalItems')
-            return $this->data['total_items'] ?? 0;
+            return $this->total_items ?? 0;
 
         return parent::__get($name);
     }
