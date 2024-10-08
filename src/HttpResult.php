@@ -12,6 +12,8 @@ final class HttpResult implements Abstracts\HttpResult
 
     private ?string $errorMessage;
 
+    private int $httpCode;
+
     /**
      * @var mixed
      */
@@ -22,24 +24,27 @@ final class HttpResult implements Abstracts\HttpResult
         $this->data = null;
         $this->errorCode = null;
         $this->errorMessage = null;
+        $this->httpCode = 0;
     }
 
-    public static function success(?string $rawResult = null): HttpResult
+    public static function success(int $httpCode, ?string $rawResult = null): HttpResult
     {
         $result = new self();
         $result->success = true;
+        $result->httpCode = $httpCode;
         $result->data = empty($rawResult)
             ? null
             : json_decode($rawResult);
         return $result;
     }
 
-    public static function fail(string $errorCode, string $errorMessage): HttpResult
+    public static function fail(int $httpCode, string $errorCode, string $errorMessage): HttpResult
     {
         $result = new self();
         $result->success = false;
         $result->errorCode = $errorCode;
         $result->errorMessage = $errorMessage;
+        $result->httpCode = $httpCode;
         return $result;
     }
 
@@ -56,6 +61,11 @@ final class HttpResult implements Abstracts\HttpResult
     public function getErrorMessage(): ?string
     {
         return $this->errorMessage;
+    }
+
+    public function getHttpCode(): int
+    {
+        return $this->httpCode;
     }
 
     public function getData()

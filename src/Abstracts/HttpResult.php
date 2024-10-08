@@ -10,6 +10,8 @@ interface HttpResult
 
     public function getErrorMessage(): ?string;
 
+    public function getHttpCode(): int;
+
     /**
      * @return mixed
      */

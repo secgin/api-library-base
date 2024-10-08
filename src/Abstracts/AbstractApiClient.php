@@ -44,10 +44,15 @@ abstract class AbstractApiClient implements ApiClient
 
     private function handle(string $requestName, $request): Result
     {
-        if ($requestName != 'getToken' and !$this->tokenStorage->hasToken())
-            $this->refreshToken();
+        $result = $this->getRequestHandler($requestName)->handle($request);
 
-        return $this->getRequestHandler($requestName)->handle($request);
+        if ($result->getErrorCode() == 'UNAUTHORIZED')
+        {
+            $this->refreshToken();
+            $result = $this->getRequestHandler($requestName)->handle($request);
+        }
+
+        return $result;
     }
 
     private function refreshToken(): void

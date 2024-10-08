@@ -39,10 +39,11 @@ final class CurlHttpClient implements Abstracts\HttpClient
         $ch = curl_init($url);
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 
         $requestResult = $result === false
-            ? HttpResult::fail(curl_errno($ch), curl_error($ch))
-            : HttpResult::success($result);
+            ? HttpResult::fail($httpCode, curl_errno($ch), curl_error($ch))
+            : HttpResult::success($httpCode, $result);
 
         curl_close($ch);
         return $requestResult;

@@ -6,5 +6,7 @@ interface Result
 {
     public function isSuccess(): bool;
 
-    public function getMessage(): string;
+    public function getErrorCode(): string;
+
+    public function getErrorMessage(): string;
 }
