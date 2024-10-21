@@ -25,12 +25,12 @@ final class HttpRequest implements Abstracts\HttpRequest
         $this->queryParams = [];
     }
 
-    public static function post(string $uri) : self
+    public static function post(string $uri): self
     {
         return new self($uri, 'POST');
     }
 
-    public static function get(string $uri) : self
+    public static function get(string $uri): self
     {
         return new self($uri, 'GET');
     }
@@ -54,7 +54,12 @@ final class HttpRequest implements Abstracts\HttpRequest
     public function setData(array $data): self
     {
         foreach ($data as $key => $value)
+        {
+            if (is_array($value) || is_object($value))
+                continue;
+
             $this->url = @str_replace("{" . $key . "}", $value, $this->url);
+        }
 
         $this->data = $data;
         return $this;

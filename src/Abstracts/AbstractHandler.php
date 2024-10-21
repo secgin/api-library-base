@@ -2,9 +2,6 @@
 
 namespace YG\ApiLibraryBase\Abstracts;
 
-use YG\ApiLibraryBase\Abstracts\Result as ResultInterface;
-use YG\ApiLibraryBase\Result;
-
 abstract class AbstractHandler
 {
     protected Config $config;
@@ -12,11 +9,6 @@ abstract class AbstractHandler
     protected HttpClient $httpClient;
 
     protected TokenStorageService $tokenStorageService;
-
-    protected function sendRequest(HttpRequest $httpRequest): ResultInterface
-    {
-        return new Result($this->httpClient->send($httpRequest));
-    }
 
     public function setConfig(Config $config): void
     {

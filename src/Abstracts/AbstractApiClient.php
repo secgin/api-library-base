@@ -10,7 +10,7 @@ abstract class AbstractApiClient implements ApiClient
 
     private HttpClient $httpClient;
 
-    private TokenStorageService $tokenStorage;
+    protected TokenStorageService $tokenStorage;
 
     private array $requestHandlerClasses = [];
 
@@ -29,7 +29,11 @@ abstract class AbstractApiClient implements ApiClient
         return isset($this->requestHandlerClasses[$name]);
     }
 
-    private function getRequestHandler($name)
+    /**
+     * @param $name
+     * @return mixed|AbstractHandler|AbstractQueryHandler|AbstractCommandHandler
+     */
+    protected function getRequestHandler($name)
     {
         $requestHandlerClass = $this->requestHandlerClasses[$name];
         $handler = new $requestHandlerClass();
@@ -42,24 +46,10 @@ abstract class AbstractApiClient implements ApiClient
         return $handler;
     }
 
-    private function handle(string $requestName, $request): Result
+    protected function handle(string $requestName, $request): Result
     {
-        $result = $this->getRequestHandler($requestName)->handle($request);
-
-        if ($result->getErrorCode() == 'UNAUTHORIZED')
-        {
-            $this->refreshToken();
-            $result = $this->getRequestHandler($requestName)->handle($request);
-        }
-
-        return $result;
-    }
-
-    private function refreshToken(): void
-    {
-        $result = $this->getRequestHandler('getToken')->handle();
-        if ($result->isSuccess())
-            $this->tokenStorage->setToken($result->token);
+        $handler = $this->getRequestHandler($requestName);
+        return $handler->handle($request);
     }
 
     #region Magic Methods

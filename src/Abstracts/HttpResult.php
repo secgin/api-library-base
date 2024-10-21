@@ -12,8 +12,5 @@ interface HttpResult
 
     public function getHttpCode(): int;
 
-    /**
-     * @return mixed
-     */
-    public function getData();
+    public function getData(): ?string;
 }

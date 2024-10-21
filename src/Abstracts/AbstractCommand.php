@@ -5,11 +5,16 @@ namespace YG\ApiLibraryBase\Abstracts;
 use Exception;
 
 /**
- * @method static static create()
+ * @method static static create(array $data = [])
  */
 abstract class AbstractCommand implements Command
 {
-    private array $data = [];
+    private array $data;
+
+    protected function __construct(array $data = [])
+    {
+        $this->data = $data;
+    }
 
     public function getData(): array
     {
@@ -30,7 +35,7 @@ abstract class AbstractCommand implements Command
     public static function __callStatic($name, $arguments)
     {
         if ($name == 'create')
-            return new static();
+            return new static(...$arguments);
 
         throw new Exception("Call to undefined method " . __CLASS__ . "::" . $name . "()");
     }

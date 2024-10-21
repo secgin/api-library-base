@@ -9,8 +9,4 @@ use YG\ApiLibraryBase\Abstracts\AbstractConfig;
  */
 final class Config extends AbstractConfig
 {
-    public static function create(array $config = []): self
-    {
-        return new self($config);
-    }
 }

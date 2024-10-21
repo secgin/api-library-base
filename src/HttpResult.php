@@ -2,8 +2,6 @@
 
 namespace YG\ApiLibraryBase;
 
-use YG\ApiLibraryBase;
-
 final class HttpResult implements Abstracts\HttpResult
 {
     private bool $success;
@@ -14,10 +12,7 @@ final class HttpResult implements Abstracts\HttpResult
 
     private int $httpCode;
 
-    /**
-     * @var mixed
-     */
-    private $data;
+    private ?string $data;
 
     private function __construct()
     {
@@ -32,9 +27,7 @@ final class HttpResult implements Abstracts\HttpResult
         $result = new self();
         $result->success = true;
         $result->httpCode = $httpCode;
-        $result->data = empty($rawResult)
-            ? null
-            : json_decode($rawResult);
+        $result->data = $rawResult;
         return $result;
     }
 
@@ -68,7 +61,7 @@ final class HttpResult implements Abstracts\HttpResult
         return $this->httpCode;
     }
 
-    public function getData()
+    public function getData(): ?string
     {
         return $this->data;
     }

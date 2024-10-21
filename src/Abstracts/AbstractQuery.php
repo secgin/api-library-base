@@ -5,11 +5,21 @@ namespace YG\ApiLibraryBase\Abstracts;
 use Exception;
 
 /**
- * @method static static create()
+ * @method static static create(array $params = [])
  */
 abstract class AbstractQuery implements Query
 {
-    private array $params = [];
+    private array $params;
+
+    protected function __construct(array $params = [])
+    {
+        $this->params = $params;
+    }
+
+    protected function setParams(array $params): void
+    {
+        $this->params = $params;
+    }
 
     public function getParams(): array
     {
@@ -30,7 +40,7 @@ abstract class AbstractQuery implements Query
     public static function __callStatic($name, $arguments)
     {
         if ($name == 'create')
-            return new static();
+            return new static(...$arguments);
 
         throw new Exception("Call to undefined method " . __CLASS__ . "::" . $name . "()");
     }

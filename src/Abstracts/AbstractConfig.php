@@ -2,6 +2,11 @@
 
 namespace YG\ApiLibraryBase\Abstracts;
 
+use Exception;
+
+/**
+ * @method static static create(array $configs = [])
+ */
 abstract class AbstractConfig implements Config
 {
     private array $items = [];
@@ -16,9 +21,17 @@ abstract class AbstractConfig implements Config
         return $this->items[$key] ?? '';
     }
 
-    private function set(string $key, string $value):void
+    public function set(string $key, $value): void
     {
         $this->items[$key] = $value;
+    }
+
+    public function __get($name)
+    {
+        if (isset($this->items[$name]))
+            return $this->get($name);
+
+        return null;
     }
 
     public function __call($name, $arguments)
@@ -28,5 +41,16 @@ abstract class AbstractConfig implements Config
 
         $this->set($name, $arguments[0]);
         return $this;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        if ($name == 'create')
+            return new static(...$arguments);
+
+        throw new Exception("Call to undefined method " . __CLASS__ . "::" . $name . "()");
     }
 }
