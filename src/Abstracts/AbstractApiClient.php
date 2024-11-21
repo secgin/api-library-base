@@ -3,6 +3,11 @@
 namespace YG\ApiLibraryBase\Abstracts;
 
 use Exception;
+use YG\ApiLibraryBase\Abstracts\Config\Config;
+use YG\ApiLibraryBase\Abstracts\Http\HttpClient;
+use YG\ApiLibraryBase\Abstracts\Request\AbstractRequestHandler;
+use YG\ApiLibraryBase\Abstracts\Result\Result;
+use YG\ApiLibraryBase\CurlHttpClient;
 
 abstract class AbstractApiClient implements ApiClient
 {
@@ -10,16 +15,26 @@ abstract class AbstractApiClient implements ApiClient
 
     private HttpClient $httpClient;
 
-    protected TokenStorageService $tokenStorage;
+    protected ?TokenStorageService $tokenStorage;
 
     private array $requestHandlerClasses = [];
 
-    public function __construct(Config $config, HttpClient $httpClient, TokenStorageService $tokenStorage)
+    public function __construct(Config $config)
     {
         $this->config = $config;
-        $this->httpClient = $httpClient;
-        $this->tokenStorage = $tokenStorage;
+        $this->httpClient = new CurlHttpClient();
+        $this->tokenStorage = null;
         $this->requestHandlerClasses = $this->getRequestHandlerClasses();
+    }
+
+    public function setHttpClient(HttpClient $httpClient): void
+    {
+        $this->httpClient = $httpClient;
+    }
+
+    public function setTokenStorage(TokenStorageService $tokenStorage): void
+    {
+        $this->tokenStorage = $tokenStorage;
     }
 
     protected abstract function getRequestHandlerClasses(): array;
@@ -31,17 +46,20 @@ abstract class AbstractApiClient implements ApiClient
 
     /**
      * @param $name
-     * @return mixed|AbstractHandler|AbstractQueryHandler|AbstractCommandHandler
+     *
+     * @return mixed|AbstractRequestHandler
      */
     protected function getRequestHandler($name)
     {
         $requestHandlerClass = $this->requestHandlerClasses[$name];
         $handler = new $requestHandlerClass();
-        if ($handler instanceof AbstractHandler)
+        if ($handler instanceof AbstractRequestHandler)
         {
             $handler->setConfig($this->config);
             $handler->setHttpClient($this->httpClient);
-            $handler->setTokenStorageService($this->tokenStorage);
+
+            if ($this->tokenStorage != null)
+                $handler->setTokenStorageService($this->tokenStorage);
         }
         return $handler;
     }
@@ -53,6 +71,7 @@ abstract class AbstractApiClient implements ApiClient
     }
 
     #region Magic Methods
+
     /**
      * @throws Exception
      */

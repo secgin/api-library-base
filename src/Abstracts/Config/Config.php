@@ -1,6 +1,6 @@
 <?php
 
-namespace YG\ApiLibraryBase\Abstracts;
+namespace YG\ApiLibraryBase\Abstracts\Config;
 
 interface Config
 {

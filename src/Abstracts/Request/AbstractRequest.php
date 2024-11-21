@@ -1,13 +1,13 @@
 <?php
 
-namespace YG\ApiLibraryBase\Abstracts;
+namespace YG\ApiLibraryBase\Abstracts\Request;
 
 use Exception;
 
 /**
  * @method static static create(array $params = [])
  */
-abstract class AbstractQuery implements Query
+abstract class AbstractRequest implements Request
 {
     private array $params;
 
@@ -19,6 +19,11 @@ abstract class AbstractQuery implements Query
     protected function setParams(array $params): void
     {
         $this->params = $params;
+    }
+
+    protected function setParam(string $key, $value): void
+    {
+        $this->params[$key] = $value;
     }
 
     public function getParams(): array

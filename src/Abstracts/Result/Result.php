@@ -1,6 +1,6 @@
 <?php
 
-namespace YG\ApiLibraryBase\Abstracts;
+namespace YG\ApiLibraryBase\Abstracts\Result;
 
 interface Result
 {

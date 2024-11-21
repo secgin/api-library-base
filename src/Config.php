@@ -2,7 +2,7 @@
 
 namespace YG\ApiLibraryBase;
 
-use YG\ApiLibraryBase\Abstracts\AbstractConfig;
+use YG\ApiLibraryBase\Abstracts\Config\AbstractConfig;
 
 /**
  * @method self baseUrl(string $baseUrl)

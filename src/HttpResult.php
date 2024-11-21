@@ -2,7 +2,7 @@
 
 namespace YG\ApiLibraryBase;
 
-final class HttpResult implements Abstracts\HttpResult
+final class HttpResult implements Abstracts\Http\HttpResult
 {
     private bool $success;
 
@@ -61,7 +61,7 @@ final class HttpResult implements Abstracts\HttpResult
         return $this->httpCode;
     }
 
-    public function getData(): ?string
+    public function getContent(): ?string
     {
         return $this->data;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace YG\ApiLibraryBase\Abstracts;
+namespace YG\ApiLibraryBase\Abstracts\Http;
 
 interface HttpResult
 {
@@ -12,5 +12,5 @@ interface HttpResult
 
     public function getHttpCode(): int;
 
-    public function getData(): ?string;
+    public function getContent(): ?string;
 }

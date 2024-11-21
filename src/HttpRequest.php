@@ -2,7 +2,7 @@
 
 namespace YG\ApiLibraryBase;
 
-final class HttpRequest implements Abstracts\HttpRequest
+final class HttpRequest implements Abstracts\Http\HttpRequest
 {
     private string $url;
 

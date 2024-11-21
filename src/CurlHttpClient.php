@@ -2,15 +2,23 @@
 
 namespace YG\ApiLibraryBase;
 
-use YG\ApiLibraryBase\Abstracts\HttpRequest;
+use YG\ApiLibraryBase\Abstracts\Http\HttpRequest;
+use YG\ApiLibraryBase\Abstracts\Http\HttpRequestHandleListener;
 
-final class CurlHttpClient implements Abstracts\HttpClient
+final class CurlHttpClient implements Abstracts\Http\HttpClient
 {
+    private ?HttpRequestHandleListener $requestHandleListener = null;
+
     private ?string $baseUrl;
 
     public function __construct(?string $baseUrl = null)
     {
         $this->baseUrl = $baseUrl;
+    }
+
+    public function setRequestHandleListener(?HttpRequestHandleListener $requestHandleListener): void
+    {
+        $this->requestHandleListener = $requestHandleListener;
     }
 
     public function send(HttpRequest $httpRequest): HttpResult
@@ -38,12 +46,19 @@ final class CurlHttpClient implements Abstracts\HttpClient
 
         $ch = curl_init($url);
         curl_setopt_array($ch, $options);
+
+        if ($this->requestHandleListener != null)
+            $this->requestHandleListener->beforeRequest($httpRequest);
+
         $result = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 
         $requestResult = $result === false
             ? HttpResult::fail($httpCode, curl_errno($ch), curl_error($ch))
             : HttpResult::success($httpCode, $result);
+
+        if ($this->requestHandleListener != null)
+            $this->requestHandleListener->afterRequest($httpRequest, $requestResult);
 
         curl_close($ch);
         return $requestResult;

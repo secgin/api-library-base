@@ -1,8 +1,9 @@
 <?php
 
-namespace YG\ApiLibraryBase\Abstracts;
+namespace YG\ApiLibraryBase\Abstracts\Result;
 
 use Exception;
+use YG\ApiLibraryBase\Abstracts\Http\HttpResult;
 
 /**
  * @method static static create(HttpResult $httpResult)
