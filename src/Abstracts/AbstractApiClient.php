@@ -9,6 +9,9 @@ use YG\ApiLibraryBase\Abstracts\Request\AbstractRequestHandler;
 use YG\ApiLibraryBase\Abstracts\Result\Result;
 use YG\ApiLibraryBase\CurlHttpClient;
 
+/**
+ * @property-read HttpClient $httpClient
+ */
 abstract class AbstractApiClient implements ApiClient
 {
     private Config $config;
@@ -19,17 +22,12 @@ abstract class AbstractApiClient implements ApiClient
 
     private array $requestHandlerClasses = [];
 
-    public function __construct(Config $config)
+    public function __construct(Config $config, HttpClient $httpClient = null)
     {
         $this->config = $config;
-        $this->httpClient = new CurlHttpClient();
+        $this->httpClient = $httpClient ?? new CurlHttpClient();
         $this->tokenStorage = null;
         $this->requestHandlerClasses = $this->getRequestHandlerClasses();
-    }
-
-    public function setHttpClient(HttpClient $httpClient): void
-    {
-        $this->httpClient = $httpClient;
     }
 
     public function setTokenStorage(TokenStorageService $tokenStorage): void
@@ -71,6 +69,17 @@ abstract class AbstractApiClient implements ApiClient
     }
 
     #region Magic Methods
+
+    /**
+     * @throws Exception
+     */
+    public function __get($name)
+    {
+        if ($name == 'httpClient')
+            return $this->httpClient;
+
+        throw new Exception('Undefined property via __get()');
+    }
 
     /**
      * @throws Exception
