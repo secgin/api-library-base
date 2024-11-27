@@ -4,9 +4,9 @@ namespace YG\ApiLibraryBase\Abstracts;
 
 interface TokenStorageService
 {
-    public function hasToken(): bool;
+    public function hasToken(string $name): bool;
 
-    public function getToken(): string;
+    public function getToken(string $name): string;
 
-    public function setToken(string $token): void;
+    public function setToken(string $name, string $token): void;
 }
