@@ -40,6 +40,11 @@ final class HttpRequest implements Abstracts\Http\HttpRequest
         return $this->addHeader('Authorization', 'Basic ' . base64_encode($username . ':' . $password));
     }
 
+    public function setBasicAuthenticationByCode(string $code): self
+    {
+        return $this->addHeader('Authorization', 'Basic ' . $code);
+    }
+
     public function setBearerAuthentication(string $token): self
     {
         return $this->addHeader('Authorization', 'Bearer ' . $token);
