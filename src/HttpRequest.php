@@ -50,7 +50,12 @@ final class HttpRequest implements Abstracts\Http\HttpRequest
         return $this->addHeader('Authorization', 'Bearer ' . $token);
     }
 
-    public function addHeader(string $name, string $value): self
+    /**
+     * @param string $name
+     * @param string|array $value
+     * @return $this
+     */
+    public function addHeader(string $name, $value): self
     {
         $this->headers[$name] = $value;
         return $this;
