@@ -10,6 +10,11 @@ use YG\ApiLibraryBase\Abstracts\Http\HttpResult;
  */
 abstract class AbstractResult implements Result
 {
+    /**
+     * @var mixed
+     */
+    protected $data;
+
     public function __construct(HttpResult $httpResult)
     {
     }

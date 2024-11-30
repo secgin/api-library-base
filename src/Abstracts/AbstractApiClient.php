@@ -51,8 +51,7 @@ abstract class AbstractApiClient implements ApiClient
     {
         $requestHandlerClass = $this->requestHandlerClasses[$name];
         $handler = new $requestHandlerClass();
-        if ($handler instanceof AbstractRequestHandler)
-        {
+        if ($handler instanceof AbstractRequestHandler) {
             $handler->setConfig($this->config);
             $handler->setHttpClient($this->httpClient);
 
@@ -78,7 +77,7 @@ abstract class AbstractApiClient implements ApiClient
         if ($name == 'httpClient')
             return $this->httpClient;
 
-        throw new Exception('Undefined property via __get()');
+        throw new Exception('Undefined property via __get() (' . $name . ')');
     }
 
     /**
@@ -89,7 +88,7 @@ abstract class AbstractApiClient implements ApiClient
         if ($this->hasRequestHandlerClass($name))
             return $this->handle($name, $arguments[0] ?? null);
 
-        throw new Exception('Method not found');
+        throw new Exception('Method not found (' . $name . ')');
     }
     #endregion
 }

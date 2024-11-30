@@ -30,5 +30,5 @@ abstract class AbstractRequestHandler implements RequestHandler
         $this->tokenStorageService = $tokenStorageService;
     }
 
-    public abstract function handle(?Request $request): ResultInterface;
+    public abstract function handle(Request $request): ResultInterface;
 }
