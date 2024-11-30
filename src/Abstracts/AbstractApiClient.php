@@ -14,7 +14,7 @@ use YG\ApiLibraryBase\CurlHttpClient;
  */
 abstract class AbstractApiClient implements ApiClient
 {
-    private Config $config;
+    protected Config $config;
 
     private HttpClient $httpClient;
 
