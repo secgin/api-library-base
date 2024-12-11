@@ -20,7 +20,9 @@ abstract class AbstractApiClient implements ApiClient
 
     protected ?TokenStorageService $tokenStorage;
 
-    private array $requestHandlerClasses = [];
+    private array $requestHandlerClasses;
+
+    private array $decoratorHandlerClasses;
 
     public function __construct(Config $config, HttpClient $httpClient = null)
     {
@@ -28,11 +30,17 @@ abstract class AbstractApiClient implements ApiClient
         $this->httpClient = $httpClient ?? new CurlHttpClient();
         $this->tokenStorage = null;
         $this->requestHandlerClasses = $this->getRequestHandlerClasses();
+        $this->decoratorHandlerClasses = [];
     }
 
     public function setTokenStorage(TokenStorageService $tokenStorage): void
     {
         $this->tokenStorage = $tokenStorage;
+    }
+
+    public function setDecoratorHandlerClasses(array $decoratorHandlerClasses): void
+    {
+        $this->decoratorHandlerClasses = $decoratorHandlerClasses;
     }
 
     protected abstract function getRequestHandlerClasses(): array;
@@ -64,6 +72,10 @@ abstract class AbstractApiClient implements ApiClient
     protected function handle(string $requestName, $request): Result
     {
         $handler = $this->getRequestHandler($requestName);
+
+        if (array_key_exists($requestName, $this->decoratorHandlerClasses))
+            $handler = new $this->decoratorHandlerClasses[$requestName]($handler);
+
         return $handler->handle($request);
     }
 

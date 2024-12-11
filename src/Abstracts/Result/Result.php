@@ -9,4 +9,9 @@ interface Result
     public function getErrorCode(): string;
 
     public function getErrorMessage(): string;
+
+    /**
+     * @return mixed
+     */
+    public function getData();
 }
