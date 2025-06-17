@@ -5,7 +5,7 @@ namespace YG\ApiLibraryBase\Abstracts\Request;
 use YG\ApiLibraryBase\Abstracts\Config\Config;
 use YG\ApiLibraryBase\Abstracts\Http\HttpClient;
 use YG\ApiLibraryBase\Abstracts\Result\Result as ResultInterface;
-use YG\ApiLibraryBase\Abstracts\TokenStorageService;
+use YG\ApiLibraryBase\Abstracts\Services\AccessTokenStorage;
 
 abstract class AbstractRequestHandler implements RequestHandler
 {
@@ -13,7 +13,7 @@ abstract class AbstractRequestHandler implements RequestHandler
 
     protected HttpClient $httpClient;
 
-    protected TokenStorageService $tokenStorageService;
+    protected AccessTokenStorage $tokenStorageService;
 
     public function setConfig(Config $config): void
     {
@@ -25,7 +25,7 @@ abstract class AbstractRequestHandler implements RequestHandler
         $this->httpClient = $httpClient;
     }
 
-    public function setTokenStorageService(TokenStorageService $tokenStorageService): void
+    public function setTokenStorageService(AccessTokenStorage $tokenStorageService): void
     {
         $this->tokenStorageService = $tokenStorageService;
     }

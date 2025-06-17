@@ -1,7 +1,8 @@
 <?php
 
-namespace YG\ApiLibraryBase;
+namespace YG\ApiLibraryBase\Http;
 
+use YG\ApiLibraryBase\Abstracts;
 use YG\ApiLibraryBase\Abstracts\Http\HttpRequest;
 use YG\ApiLibraryBase\Abstracts\Http\HttpRequestHandleListener;
 

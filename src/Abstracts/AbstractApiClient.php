@@ -7,7 +7,9 @@ use YG\ApiLibraryBase\Abstracts\Config\Config;
 use YG\ApiLibraryBase\Abstracts\Http\HttpClient;
 use YG\ApiLibraryBase\Abstracts\Request\AbstractRequestHandler;
 use YG\ApiLibraryBase\Abstracts\Result\Result;
-use YG\ApiLibraryBase\CurlHttpClient;
+use YG\ApiLibraryBase\Abstracts\Services\AccessTokenStorage;
+use YG\ApiLibraryBase\Http\CurlHttpClient;
+use YG\ApiLibraryBase\Services\SessionAccessTokenStorage;
 
 /**
  * @property-read HttpClient $httpClient
@@ -18,7 +20,7 @@ abstract class AbstractApiClient implements ApiClient
 
     private HttpClient $httpClient;
 
-    protected ?TokenStorageService $tokenStorage;
+    protected ?AccessTokenStorage $tokenStorage;
 
     private array $requestHandlerClasses;
 
@@ -28,12 +30,12 @@ abstract class AbstractApiClient implements ApiClient
     {
         $this->config = $config;
         $this->httpClient = $httpClient ?? new CurlHttpClient();
-        $this->tokenStorage = null;
+        $this->tokenStorage = new SessionAccessTokenStorage();
         $this->requestHandlerClasses = $this->getRequestHandlerClasses();
         $this->decoratorHandlerClasses = [];
     }
 
-    public function setTokenStorage(TokenStorageService $tokenStorage): void
+    public function setTokenStorage(AccessTokenStorage $tokenStorage): void
     {
         $this->tokenStorage = $tokenStorage;
     }
@@ -59,12 +61,11 @@ abstract class AbstractApiClient implements ApiClient
     {
         $requestHandlerClass = $this->requestHandlerClasses[$name];
         $handler = new $requestHandlerClass();
-        if ($handler instanceof AbstractRequestHandler) {
+        if ($handler instanceof AbstractRequestHandler)
+        {
             $handler->setConfig($this->config);
             $handler->setHttpClient($this->httpClient);
-
-            if ($this->tokenStorage != null)
-                $handler->setTokenStorageService($this->tokenStorage);
+            $handler->setTokenStorageService($this->tokenStorage);
         }
         return $handler;
     }

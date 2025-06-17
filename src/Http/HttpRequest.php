@@ -1,6 +1,8 @@
 <?php
 
-namespace YG\ApiLibraryBase;
+namespace YG\ApiLibraryBase\Http;
+
+use YG\ApiLibraryBase\Abstracts;
 
 final class HttpRequest implements Abstracts\Http\HttpRequest
 {
