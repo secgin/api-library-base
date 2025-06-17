@@ -15,7 +15,7 @@ abstract class AbstractResult implements Result
      */
     protected $data;
 
-    public function __construct(HttpResult $httpResult)
+    protected function __construct()
     {
     }
 
@@ -33,7 +33,7 @@ abstract class AbstractResult implements Result
     public static function __callStatic($name, $arguments)
     {
         if ($name == 'create' and isset($arguments[0]) and $arguments[0] instanceof HttpResult)
-            return new static(...$arguments);
+            return static::create($arguments[0]);
 
         throw new Exception("Call to undefined method " . __CLASS__ . "::" . $name . "()");
     }
