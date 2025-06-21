@@ -26,9 +26,24 @@ abstract class AbstractRequest implements Request
         $this->params[$key] = $value;
     }
 
+    protected function addParams(array $params): void
+    {
+        $this->params = array_merge($this->params, $params);
+    }
+
     public function getParams(): array
     {
         return $this->params;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function getParam(string $key)
+    {
+        return $this->params[$key];
     }
 
     public function __call($name, $arguments)
