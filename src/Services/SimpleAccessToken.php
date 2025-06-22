@@ -28,8 +28,9 @@ final class SimpleAccessToken implements AccessToken
         return $this->expirationAt;
     }
 
-    public function isExpirationPassed(): bool
+    public function isExpirationPassed(string $timezone = 'UTC'): bool
     {
-        return new DateTimeImmutable() >= $this->expirationAt;
+        $now = new \DateTimeImmutable('now', new \DateTimeZone($timezone));
+        return $now >= $this->expirationAt;
     }
 }
