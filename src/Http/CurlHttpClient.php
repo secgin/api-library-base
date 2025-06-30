@@ -63,7 +63,7 @@ final class CurlHttpClient implements Abstracts\Http\HttpClient
             if ($httpCode >= 200 and $httpCode<300)
                 $requestResult = HttpResult::success($httpCode, $result);
             else
-                $requestResult = HttpResult::fail($httpCode, curl_errno($ch), curl_error($ch));
+                $requestResult = HttpResult::fail($httpCode, curl_errno($ch), curl_error($ch), $result);
         }
 
         if ($this->requestHandleListener != null)

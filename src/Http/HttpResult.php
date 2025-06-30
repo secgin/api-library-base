@@ -33,13 +33,15 @@ final class HttpResult implements Abstracts\Http\HttpResult
         return $result;
     }
 
-    public static function fail(int $httpCode, string $errorCode, string $errorMessage): HttpResult
+    public static function fail(int $httpCode, string $errorCode, string $errorMessage,
+                                ?string $rawResult = null): HttpResult
     {
         $result = new self();
         $result->success = false;
         $result->errorCode = $errorCode;
         $result->errorMessage = $errorMessage;
         $result->httpCode = $httpCode;
+        $result->data = $rawResult;
         return $result;
     }
 
